@@ -5,7 +5,17 @@ import {
 } from 'semantic-ui-react';
 
 const APIURL = "http://localhost:8080/api";
-
+let currentDate = new Date();
+let currentDay = currentDate.toISOString();
+console.log('currentDay::' + currentDay);
+let currentDay2 = currentDate.toDateString();
+console.log('currentDay2::' + currentDay2);
+let currentDay3 = currentDate.toLocaleDateString();
+console.log('currentDay2::' + currentDay3);
+let currentDay4 = currentDate.toTimeString();
+console.log('currentDay2::' + currentDay4);
+let currentDay5 = currentDate.toLocaleString();
+console.log('currentDay2::' + currentDay5);
 const options = [
     { key: 't', text: '제목', value: '제목' },
     { key: 'c', text: '내용', value: '내용' },
@@ -15,9 +25,12 @@ class App2 extends Component {
 
     state = {
         vo : {
-            buId: '',
-            buName: '',
-            buRole: ''
+            bdId: 'ex01',
+            bdTitle: '',
+            bdContent: '',
+            bdWriteDate: currentDay,
+            // bdWriteId : 'USE_201804261702195'
+            buId : 'USE_201804261702195'
         },
         message : '',
         userlist : [],
@@ -83,6 +96,7 @@ class App2 extends Component {
     _asyncSave = async() => {
 
         try{
+            console.log('strtingify::' + JSON.stringify(this.state.vo));
              Promise([
                await fetch(APIURL+'/board',{
                    method : 'post',
@@ -113,11 +127,13 @@ class App2 extends Component {
     }
 
     onRowSelection = (data) => {
-        //console.log("[data] ", data);
+        console.log("[data] ", data);
         this.setState({
             vo : {...this.state.vo,
-                buId: data.buId,
-                buName: data.buName,
+                bdId: data.bdId,
+                bdTitle: data.bdTitle,
+                bdContent: data.bdContent,
+                bdWriteDate: data.bdWriteDate,
             },
             checkid: data.buId
         })
@@ -126,7 +142,15 @@ class App2 extends Component {
     nameChange = (e)=>{
         this.setState({
             vo : {...this.state.vo,
-                buName : e.target.value
+                bdTitle : e.target.value
+            }
+        })
+    }
+ 
+    contentChange = (e)=>{
+        this.setState({
+            vo : {...this.state.vo,
+                bdContent : e.target.value
             }
         })
     }
@@ -192,9 +216,10 @@ class App2 extends Component {
                             <Form.Field>
                                 <label>내용</label>
                                 <input placeholder='내용을 입력하세요' value={this.state.vo.bdContent}
-                                  onChange={this.nameChange}
+                                  onChange={this.contentChange}
                                 />
                             </Form.Field>
+                           
                             <Button color="green" onClick={this.readAct}>조회</Button>
                             <Button color="red" onClick={this.saveAct}>저장</Button>
                             <Button color="orange" onClick={this.deleteAct}>삭제</Button>
