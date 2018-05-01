@@ -28,9 +28,12 @@ class App2 extends Component {
             bdId: 'ex01',
             bdTitle: '',
             bdContent: '',
-            bdWriteDate: currentDay,
-            // bdWriteId : 'USE_201804261702195'
-            buId : 'USE_201804261702195'
+            bdWriteDate: currentDay,        
+            bdWriterId: {
+                "buId": "USE_201804261702195",
+                "buName": "string",
+                "buRole": "string"
+              }
         },
         message : '',
         userlist : [],
@@ -135,7 +138,7 @@ class App2 extends Component {
                 bdContent: data.bdContent,
                 bdWriteDate: data.bdWriteDate,
             },
-            checkid: data.buId
+            checkid: data.bdId
         })
     }
 
@@ -169,13 +172,14 @@ class App2 extends Component {
             active : true
         });
         console.log("[del vo] ", this.state.checkid);
+        console.log("[del vo] ", this.state);
         this._asyncDelete();
     }
 
     _asyncDelete = async() => {
         try{
             Promise([
-                await fetch(APIURL+'/user/'+this.state.checkid,{
+                await fetch(APIURL+'/board/'+this.state.checkid,{
                     method : 'delete',
                     headers: {
                         'content-type': 'application/json'
